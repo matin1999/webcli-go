@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"os/exec"
-	"regexp"
 	"github.com/matin1999/webcli-go/internal/configs"
 	"strconv"
 	"strings"
@@ -95,12 +94,6 @@ func ParseTimeoutSeconds(s string, def time.Duration) (time.Duration, error) {
 	return time.Duration(secs) * time.Second, nil
 }
 
-func MaskSecrets(cmd string) string {
-	// mask pass=... and become_pass=...
-	cmd = regexp.MustCompile(`(?i)(\bpass=)([^ \t]+)`).ReplaceAllString(cmd, "$1***")
-	cmd = regexp.MustCompile(`(?i)(\bbecome_pass=)([^ \t]+)`).ReplaceAllString(cmd, "$1***")
-	return cmd
-}
 
 func SplitCSV(s string) []string {
 	if s == "" {

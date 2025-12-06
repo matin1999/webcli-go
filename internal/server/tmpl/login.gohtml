@@ -1,0 +1,33 @@
+<!doctype html>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<style>
+  body{font-family:system-ui,-apple-system,Segoe UI,Roboto,Ubuntu,Helvetica,Arial,sans-serif;max-width:440px;margin:5vh auto;padding:24px}
+  form{display:grid;gap:12px}
+  label{display:grid;gap:6px}
+  input{padding:10px;border:1px solid #ccc;border-radius:8px}
+  button{padding:10px 14px;border:0;border-radius:10px;background:black;color:white;cursor:pointer}
+  .card{padding:18px;border:1px solid #eee;border-radius:14px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+  .row{display:flex;gap:12px;align-items:center}
+  .muted{color:#666;font-size:12px}
+</style>
+<div class="card">
+  {{if .Error}}<p style="color:#b00020">{{.Error}}</p>{{end}}
+  <form method="post" action="/login">
+    <label>Username
+      <input name="user" required autofocus autocomplete="username">
+    </label>
+    <label>Password
+      <input type="password" name="pass" required autocomplete="current-password">
+    </label>
+    <input type="hidden" name="captcha_id" value="{{.ID}}">
+    <div class="row">
+      <img src="/captcha/{{.ID}}.png" alt="captcha" height="54">
+      <a class="muted" href="/login">refresh</a>
+    </div>
+    <label>Enter the text
+      <input name="captcha_solution" required autocomplete="off">
+    </label>
+    <button>Sign in</button>
+  </form>
+</div>

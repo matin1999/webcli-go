@@ -1,0 +1,36 @@
+version: "3.9"
+services:
+  webcli:
+    container_name: webcli
+    user: "0:0"
+    cap_add:
+      - NET_ADMIN
+      - NET_RAW
+    network_mode: "host"
+    env_file:
+      - .env
+    volumes:
+      - ./logs:/app/logs:rw
+      - ./pcaps:/app/pcaps:rw
+      - /root/ansible:/root/ansible:rw
+      - /usr/local/lib/python3.9/dist-packages/ansible_collections/community/docker:/usr/share/ansible/collections/ansible_collections/community/docker:ro
+      - /root/.ssh/id_rsa:/root/.ssh/id_rsa:ro
+    restart: unless-stopped
+
+  caddy:
+    image: caddy:2.8.4-alpine
+    container_name: caddy
+    network_mode: "host"
+    env_file:
+      - .env
+    volumes:
+      - ./certs:/certs:ro  
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - webcli
+
+volumes:
+  caddy_data:
+  caddy_config:

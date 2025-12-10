@@ -214,7 +214,6 @@ func capture(args []string, user string,cfg Options) error {
 
 func inventoryAllHosts() ([]string, error) {
 	invPath := filepath.Join(
-		configs.DefaultAnsibleConfigRootPath,
 		strings.TrimPrefix(configs.InventoryKey, "/"),
 	)
 	b, err := os.ReadFile(invPath)

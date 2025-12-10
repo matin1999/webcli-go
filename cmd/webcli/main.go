@@ -4,10 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
-	"github.com/matin1999/webcli-go/internal/configs"
 	"github.com/matin1999/webcli-go/internal/helpers"
-	"github.com/matin1999/webcli-go/pkg/ansible"
-	"github.com/matin1999/webcli-go/pkg/edit"
 	"github.com/matin1999/webcli-go/pkg/pcap"
 	"strings"
 )
@@ -19,10 +16,6 @@ func main() {
 		user = "(unknown)"
 	}
 	fmt.Printf("Restricted Webcli . User=%s\nType 'help' for options.\n\n", user)
-
-	r := ansible.New(true, os.Stdout, os.Stderr)
-
-	ansRoot := configs.DefaultAnsibleConfigRootPath
 
 	in := bufio.NewScanner(os.Stdin)
 	for {
@@ -44,8 +37,6 @@ func main() {
 			return
 		case "date":
 			_ = helpers.RunLocal("/bin/date")
-		case "service":
-			ansible.HandleAnsible(args, r)
 		case "df":
 			_ = helpers.RunLocal("/bin/df", "-h")
 		case "ping":
@@ -59,8 +50,6 @@ func main() {
 			if err := pcap.Run(args, user, cfg); err != nil {
 				fmt.Println("ERR:", err)
 			}
-		case "snapshot":
-			edit.HandleSnapshot(ansRoot,args,user)
 
 		default:
 			fmt.Println("ERR: command not allowed (type 'help')")
